@@ -34,6 +34,9 @@ import UIKit
     /// Called when custom actions are called by callbacks in the JS
     /// By default, this method is not used unless called by some custom JS that you add
     @objc optional func richEditor(_ editor: RichEditorView, handle action: String)
+    
+    /// 当用户点击了粘贴之后会调用该回调,开发者应该在这个方法里面通过UIPasteboard来获取粘贴板上的内容
+    @objc optional func richEditorDidPaste(_ editor: RichEditorView)
 }
 
 /// RichEditorView is a UIView that displays richly styled text, and allows it to be edited in a WYSIWYG fashion.
@@ -526,6 +529,9 @@ import UIKit
             let range = method.range(of: actionPrefix)!
             let action = method.replacingCharacters(in: range, with: "")
             delegate?.richEditor?(self, handle: action)
+        }
+        else if method.hasPrefix("paste") {
+            delegate?.richEditorDidPaste?(self)
         }
     }
 

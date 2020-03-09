@@ -90,4 +90,14 @@ extension ViewController: RichEditorToolbarDelegate {
             toolbar.editor?.insertLink("http://github.com/cjwirth/RichEditorView", title: "Github Link")
         }
     }
+    
+    func richEditorDidPaste(_ editor: RichEditorView) {
+        let pasteboard = UIPasteboard.general
+        if pasteboard.hasStrings {
+            if let pastedStr = pasteboard.string {
+                editor.runJS("RE.prepareInsert();")
+                editor.runJS(#"RE.insertHTML('<p>\#(pastedStr.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "\n", with: "<br/>"))</p>');"#)
+            }
+        }
+    }
 }

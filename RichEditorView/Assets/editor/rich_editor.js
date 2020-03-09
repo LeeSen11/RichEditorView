@@ -62,6 +62,17 @@ RE.editor.addEventListener("blur", function() {
     RE.callback("blur");
 });
 
+RE.editor.addEventListener("paste", function(e) {
+    RE.updatePlaceholder();
+    RE.backuprange();
+    if (!(e.clipboardData && e.clipboardData.items)) {
+        return;
+    }
+    RE.callback('paste')
+    e.stopPropagation();
+    e.preventDefault();
+});
+
 RE.customAction = function(action) {
     RE.callback("action/" + action);
 };
